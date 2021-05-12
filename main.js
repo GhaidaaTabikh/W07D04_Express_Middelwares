@@ -29,7 +29,7 @@ app.use(logUsers);
 // });
 
 // //que4
-
+// app.use(express.json());
 // //que5
 // app.use((err, req, res, next) => {
 //   console.log("No users");
@@ -76,16 +76,25 @@ productRouter.use("/update", (req, res, next) => {
 
 app.use("/products", productRouter);
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+//QUE5
+
+// app.use("/products",(req,res)=>{
+//   console.log('products router');
+// });
+
+productRouter.use("", (req, res) => {
+  console.log("products router");
+});
+//QUE6
+app.use("*", (req, res) => {
+  next(errr);
 });
 
-//QUE5
-const newExpress = require("express");
-const newApp = newExpress();
+app.use((errr, req, res, next) => {
+  res.status(404);
+  res.json("NOT FOUND");
+});
 
-newApp.use("/products", productRouter);
-
-newApp.listen(3001, () => {
-  console.log(`Example app listening at http://localhost:3001`);
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
 });
